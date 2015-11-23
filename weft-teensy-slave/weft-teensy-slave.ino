@@ -27,10 +27,8 @@
 #define SAW_ASC 3
 #define NOISE 4
 
-//char* waveLabels[] = {"SINE", "SQUARE", "A_SAW", "D_SAW", "NOISE"};
-//char* modeLabels[] = {"FREQ", "AMP", "WAVE", "DUTY"};
-//volatile int encMode = 0;
-volatile boolean shouldUpdate = true;
+#define waveMax 4
+#define waveMin 0
 
 float minFreq = 0.016 * 1000.0; // 0.0125 is too low for some people to feel, trying 0.016 now
 float maxFreq = 0.4 * 1000.0;
@@ -43,22 +41,12 @@ float minAmpl = 0.0;
 float maxAmpl = 2000.0;
 float DACamplitude = 2000.0;
 
-int waveType = 0; // sine, square, saw descending, saw ascending, noise
-#define waveMax 4
-#define waveMin 0
+int waveType = 1; // sine, square (default), saw descending, saw ascending, noise
+
 
 float phase = 0.01;
 float twopi = 3.14159 * 2;
 float phaseOffset = 100; //just an initial condition, this used to be 0.05
-
-long lastFreq = 200; // middle-to-low end of the 0-1023 range
-long lastWave = 0; // sine
-long lastAmp = 1023; // full amplitude
-long lastDuty = 10; // low end of duty cycle
-long newFreq = 200;
-long newWave = 0;
-long newAmp = 1023;
-long newDuty = 10;
 
 void setup() {
   // 0 - 4095 pwm values if res set to 12-bit
