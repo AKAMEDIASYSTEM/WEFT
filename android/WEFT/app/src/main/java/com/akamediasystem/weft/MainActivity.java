@@ -11,11 +11,11 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.util.UUID;
@@ -152,34 +152,34 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
         });
 
         // Send
-        valueEdit = (EditData) findViewById(R.id.value);
-        valueEdit.setImeOptions(EditorInfo.IME_ACTION_SEND);
-        valueEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEND) {
-                    sendValueButton.callOnClick();
-                    return true;
-                }
-                return false;
-            }
-        });
+//        valueEdit = (EditData) findViewById(R.id.value);
+//        valueEdit.setImeOptions(EditorInfo.IME_ACTION_SEND);
+//        valueEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                if (actionId == EditorInfo.IME_ACTION_SEND) {
+//                    sendValueButton.callOnClick();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
-        sendZeroButton = (Button) findViewById(R.id.sendZero);
-        sendZeroButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rfduinoService.send(new byte[]{0});
-            }
-        });
+//        sendZeroButton = (Button) findViewById(R.id.sendZero);
+//        sendZeroButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                rfduinoService.send(new byte[]{0});
+//            }
+//        });
 
-        sendValueButton = (Button) findViewById(R.id.sendValue);
-        sendValueButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rfduinoService.send(valueEdit.getData());
-            }
-        });
+//        sendValueButton = (Button) findViewById(R.id.sendValue);
+//        sendValueButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                rfduinoService.send(valueEdit.getData());
+//            }
+//        });
 
         // Receive
         clearButton = (Button) findViewById(R.id.clearData);
@@ -191,6 +191,74 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
         });
 
         dataLayout = (LinearLayout) findViewById(R.id.dataLayout);
+        SeekBar seekBarFreq = (SeekBar)findViewById(R.id.seekBarFreq);
+        final TextView seekBarValue = (TextView)findViewById(R.id.textViewFreq);
+        seekBarFreq.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+                // TODO Auto-generated method stub
+                seekBarValue.setText("Frequency "+ String.valueOf(progress));
+                rfduinoService.send(HexAsciiHelper.hexToBytes("00"+String.valueOf(progress)));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        SeekBar seekBarAmp = (SeekBar)findViewById(R.id.seekBarAmp);
+        final TextView seekBarAmpValue = (TextView)findViewById(R.id.textViewAmplitude);
+        seekBarAmp.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+                // TODO Auto-generated method stub
+                seekBarValue.setText("Amplitude "+ String.valueOf(progress));
+                rfduinoService.send(HexAsciiHelper.hexToBytes("01"+String.valueOf(progress)));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        SeekBar seekBarDuty = (SeekBar)findViewById(R.id.seekBarDuty);
+        final TextView seekBarDutyValue = (TextView)findViewById(R.id.textViewDuty);
+        seekBarDuty.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+                // TODO Auto-generated method stub
+                seekBarValue.setText("Duty Cycle "+ String.valueOf(progress));
+                rfduinoService.send(HexAsciiHelper.hexToBytes("03"+String.valueOf(progress)));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+        });
     }
 
     @Override
@@ -266,8 +334,8 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
         connectButton.setEnabled(bluetoothDevice != null && state == STATE_DISCONNECTED);
 
         // Send
-        sendZeroButton.setEnabled(connected);
-        sendValueButton.setEnabled(connected);
+//        sendZeroButton.setEnabled(connected);
+//        sendValueButton.setEnabled(connected);
     }
 
     private void addData(byte[] data) {
@@ -299,6 +367,35 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
                 updateUi();
             }
         });
+    }
+
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radio_sine:
+                if (checked)
+                    rfduinoService.send(HexAsciiHelper.hexToBytes("0200"));
+                break;
+            case R.id.radio_square:
+                if (checked)
+                    rfduinoService.send(HexAsciiHelper.hexToBytes("0201"));
+                break;
+            case R.id.radio_saw_a:
+                if (checked)
+                    rfduinoService.send(HexAsciiHelper.hexToBytes("0202"));
+                break;
+            case R.id.radio_saw_d:
+                if (checked)
+                    rfduinoService.send(HexAsciiHelper.hexToBytes("0203"));
+                break;
+            case R.id.radio_noise:
+                if (checked)
+                    rfduinoService.send(HexAsciiHelper.hexToBytes("0204"));
+                break;
+        }
     }
 
 }

@@ -87,49 +87,49 @@ android:id="@+id/scrollView">
         android:layout_gravity="center_horizontal"
         android:enabled="false" />
 
-    <TextView
-        style="?android:attr/listSeparatorTextViewStyle"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView5"
-        android:text="Send"
-        android:layout_marginTop="5dip" />
+    <!--<TextView-->
+        <!--style="?android:attr/listSeparatorTextViewStyle"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/textView5"-->
+        <!--android:text="Send"-->
+        <!--android:layout_marginTop="5dip" />-->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Value:"
-        android:id="@+id/textView6" />
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Value:"-->
+        <!--android:id="@+id/textView6" />-->
 
-    <view
-        class="com.akamediasystem.weft.EditData"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/value" />
+    <!--<view-->
+        <!--class="com.akamediasystem.weft.EditData"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/value" />-->
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/sendButtons">
+    <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="fill_parent"-->
+        <!--android:id="@+id/sendButtons">-->
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Send Zero"
-            android:id="@+id/sendZero"
-            android:layout_weight="1"
-            android:enabled="false" />
+        <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Send Zero"-->
+            <!--android:id="@+id/sendZero"-->
+            <!--android:layout_weight="1"-->
+            <!--android:enabled="false" />-->
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Send Value"
-            android:id="@+id/sendValue"
-            android:layout_weight="1"
-            android:enabled="false" />
+        <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Send Value"-->
+            <!--android:id="@+id/sendValue"-->
+            <!--android:layout_weight="1"-->
+            <!--android:enabled="false" />-->
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
     <TextView
         style="?android:attr/listSeparatorTextViewStyle"
@@ -155,6 +155,95 @@ android:id="@+id/scrollView">
 
     </LinearLayout>
 
+
+
+
+    <TextView
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView10"
+        android:text="Wave Type"
+        android:layout_marginTop="5dip" />
+
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RadioButton android:id="@+id/radio_sine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/waveSine"
+            android:onClick="onRadioButtonClicked"/>
+        <RadioButton android:id="@+id/radio_square"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/waveSquare"
+            android:onClick="onRadioButtonClicked"/>
+        <RadioButton android:id="@+id/radio_saw_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/waveSawA"
+            android:onClick="onRadioButtonClicked"/>
+        <RadioButton android:id="@+id/radio_saw_d"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/waveSawD"
+            android:onClick="onRadioButtonClicked"/>
+        <RadioButton android:id="@+id/radio_noise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/waveNoise"
+            android:onClick="onRadioButtonClicked"/>
+
+
+    </RadioGroup>
+
+    <TextView
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewFreq"
+        android:text="Frequency"
+        android:layout_marginTop="5dip" />
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBarFreq"
+        android:progress="8"
+        android:max="255"/>
+
+
+    <TextView
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewAmplitude"
+        android:text="Amplitude"
+        android:layout_marginTop="5dip" />
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBarAmp"
+        android:progress="255"
+        android:max="255"/>
+
+    <TextView
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewDuty"
+        android:text="Duty Cycle"
+        android:layout_marginTop="5dip" />
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBarDuty"
+        android:progress="32"
+        android:max="255"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -166,6 +255,7 @@ android:id="@+id/scrollView">
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/dataLayout"></LinearLayout>
+
 
 </LinearLayout>
 </ScrollView>
