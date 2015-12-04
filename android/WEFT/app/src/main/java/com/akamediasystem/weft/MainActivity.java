@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -26,6 +27,7 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
     final private static int STATE_DISCONNECTED = 2;
     final private static int STATE_CONNECTING = 3;
     final private static int STATE_CONNECTED = 4;
+    private final static String TAG = MainActivity.class.getSimpleName();
 
     private int state;
 
@@ -109,8 +111,11 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        // Bluetooth
-        enableBluetoothButton = (Button) findViewById(R.id.enableBluetooth);
+        // this was jsut to satisfy some curiosity about Bonded devices (seems like BLE doesn't facilitate bonding)
+        Log.i(TAG, bluetoothAdapter.getBondedDevices().toString());
+
+                // Bluetooth
+                enableBluetoothButton = (Button) findViewById(R.id.enableBluetooth);
         enableBluetoothButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
