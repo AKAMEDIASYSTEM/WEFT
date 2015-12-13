@@ -42,7 +42,7 @@ Simply remove what you dont need, and fill in the rest.
 void setup()
 {
   Wire.begin();
-  RFduinoBLE.deviceName = "WEFT-v0a";
+  RFduinoBLE.deviceName = "WEFT-v0b";
   RFduinoBLE.advertisementData = "HI-WEFT";
   RFduinoBLE.advertisementInterval = MILLISECONDS(300);
   RFduinoBLE.txPowerLevel = -20;  // (-20dbM to +4 dBm)
@@ -54,6 +54,7 @@ void setup()
   Wire.write(255);
   Wire.endTransmission();
   RFduinoBLE.send('Z');
+//  Serial.begin(9600);
 }
 
 void loop()

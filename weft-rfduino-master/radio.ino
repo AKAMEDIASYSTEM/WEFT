@@ -5,6 +5,7 @@ void RFduinoBLE_onAdvertisement(bool start)
 void RFduinoBLE_onConnect()
 {
 RFduinoBLE.send('X');
+//Serial.println("connected");
 }
 
 void RFduinoBLE_onDisconnect()
@@ -23,6 +24,8 @@ void RFduinoBLE_onReceive(byte *data, int len)
   Wire.write(data[0]);
   Wire.write(data[1]);
   Wire.endTransmission();
+//  Serial.println(data[0]);
+//  RFduinoBLE.send(data[0]);
   RFduinoBLE.send(data[1]); //confirm message
   }
 }
