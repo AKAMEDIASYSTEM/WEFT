@@ -1,6 +1,7 @@
 package com.akamediasystem.weft;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -18,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.support.v4.app.NotificationCompat;
 
 import java.util.UUID;
 
@@ -50,6 +52,18 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
     private Button sendValueButton;
     private Button clearButton;
     private LinearLayout dataLayout;
+
+    // notif stuff
+    private NotificationReceiver nReceiver;
+    private TextView txtView;
+
+    class NotificationReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String temp = intent.getStringExtra("notification_event") + "\n" + txtView.getText();
+            txtView.setText(temp);
+        }
+    }
 
     private final BroadcastReceiver bluetoothStateReceiver = new BroadcastReceiver() {
         @Override
@@ -109,6 +123,12 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        txtView = (TextView) findViewById(R.id.textView);
+        nReceiver = new NotificationReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("com.akamediasystem.weft.NOTIFICATION_LISTENER_EXAMPLE");
+        registerReceiver(nReceiver,filter);
+
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         // this was jsut to satisfy some curiosity about Bonded devices (seems like BLE doesn't facilitate bonding)
@@ -156,36 +176,6 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
             }
         });
 
-        // Send
-//        valueEdit = (EditData) findViewById(R.id.value);
-//        valueEdit.setImeOptions(EditorInfo.IME_ACTION_SEND);
-//        valueEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                if (actionId == EditorInfo.IME_ACTION_SEND) {
-//                    sendValueButton.callOnClick();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-
-//        sendZeroButton = (Button) findViewById(R.id.sendZero);
-//        sendZeroButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                rfduinoService.send(new byte[]{0});
-//            }
-//        });
-
-//        sendValueButton = (Button) findViewById(R.id.sendValue);
-//        sendValueButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                rfduinoService.send(valueEdit.getData());
-//            }
-//        });
-
         // Receive
         clearButton = (Button) findViewById(R.id.clearData);
         clearButton.setOnClickListener(new View.OnClickListener() {
@@ -205,7 +195,8 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
                                           boolean fromUser) {
                 // TODO Auto-generated method stub
                 seekBarValue.setText("Frequency "+ String.valueOf(progress));
-                rfduinoService.send(HexAsciiHelper.hexToBytes("00"+String.valueOf(progress)));
+                rfduinoService.send(HexAsciiHelper.hexToBytes("00" + String.valueOf(progress)));
+                Log.d(TAG, "changed freq bar");
             }
 
             @Override
@@ -228,7 +219,8 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
                                           boolean fromUser) {
                 // TODO Auto-generated method stub
                 seekBarValue.setText("Amplitude "+ String.valueOf(progress));
-                rfduinoService.send(HexAsciiHelper.hexToBytes("01"+String.valueOf(progress)));
+                rfduinoService.send(HexAsciiHelper.hexToBytes("01" + String.valueOf(progress)));
+                Log.d(TAG, "changed amp bar");
             }
 
             @Override
@@ -251,7 +243,8 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
                                           boolean fromUser) {
                 // TODO Auto-generated method stub
                 seekBarValue.setText("Duty Cycle "+ String.valueOf(progress));
-                rfduinoService.send(HexAsciiHelper.hexToBytes("03"+String.valueOf(progress)));
+                rfduinoService.send(HexAsciiHelper.hexToBytes("03" + String.valueOf(progress)));
+                Log.d(TAG, "changed duty bar");
             }
 
             @Override
@@ -288,6 +281,10 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
         unregisterReceiver(rfduinoReceiver);
     }
 
+    protected void onDestroy(){
+        super.onDestroy();
+        unregisterReceiver(nReceiver);
+    }
     private void upgradeState(int newState) {
         if (newState > state) {
             updateState(newState);
@@ -403,5 +400,30 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
         }
     }
 
+    public void buttonClicked(View v){
+
+        if(v.getId() == R.id.btnCreateNotify){
+            NotificationManager nManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            NotificationCompat.Builder ncomp = new NotificationCompat.Builder(this);
+            ncomp.setContentTitle("WEFT notification");
+            ncomp.setContentText("Time is "+System.currentTimeMillis());
+            ncomp.setTicker("Notification Listener Service Example");
+            ncomp.setSmallIcon(R.mipmap.ic_launcher);
+            ncomp.setAutoCancel(true);
+            nManager.notify((int)System.currentTimeMillis(),ncomp.build());
+        }
+        else if(v.getId() == R.id.btnClearNotify){
+            Intent i = new Intent("com.akamediasystem.weft.NOTIFICATION_LISTENER_SERVICE_EXAMPLE");
+            i.putExtra("command","clearall");
+            sendBroadcast(i);
+        }
+        else if(v.getId() == R.id.btnListNotify){
+            Intent i = new Intent("com.akamediasystem.weft.NOTIFICATION_LISTENER_SERVICE_EXAMPLE");
+            i.putExtra("command","list");
+            sendBroadcast(i);
+        }
+
+
+    }
 }
 

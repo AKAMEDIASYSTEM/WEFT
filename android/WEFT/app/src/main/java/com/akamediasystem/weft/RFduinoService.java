@@ -263,6 +263,7 @@ public class RFduinoService extends Service {
 
         characteristic.setValue(data);
         characteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+        Log.d(TAG, "RFduino wrote! "+data.toString());
         return mBluetoothGatt.writeCharacteristic(characteristic);
     }
 

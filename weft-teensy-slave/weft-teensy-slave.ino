@@ -21,6 +21,7 @@
 #include <Wire.h>
 
 #define pwmOut 4
+#define LED 13
 #define SINE 0
 #define SQUARE 1
 #define SAW_DESC 2
@@ -39,14 +40,13 @@ float dutyCycle = 0.3;
 
 float minAmpl = 0.0;
 float maxAmpl = 2000.0;
+
 float DACamplitude = 2000.0;
-
 int waveType = 1; // sine, square (default), saw descending, saw ascending, noise
-
 
 float phase = 0.01;
 float twopi = 3.14159 * 2;
-float phaseOffset = 100; //just an initial condition, this used to be 0.05
+float phaseOffset = 10; //just an initial condition, this used to be 0.05
 
 void setup() {
   // 0 - 4095 pwm values if res set to 12-bit
@@ -55,6 +55,8 @@ void setup() {
   analogWriteResolution(12);
   analogWriteFrequency(pwmOut, 375000);
   pinMode(pwmOut, OUTPUT);
+  pinMode(LED, OUTPUT);
+  digitalWrite(LED,HIGH);
 
 }
 

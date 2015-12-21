@@ -153,6 +153,29 @@ android:id="@+id/scrollView">
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Notif"
+            android:id="@+id/btnCreateNotify"
+            android:onClick="buttonClicked" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ClearA"
+            android:id="@+id/btnClearNotify"
+            android:onClick="buttonClicked" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ListNotif"
+            android:id="@+id/btnListNotify"
+            android:onClick="buttonClicked" />
     </LinearLayout>
 
 
