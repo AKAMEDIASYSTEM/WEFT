@@ -47,9 +47,6 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
     private TextView deviceInfoText;
     private TextView connectionStatusText;
     private Button connectButton;
-    private EditData valueEdit;
-    private Button sendZeroButton;
-    private Button sendValueButton;
     private Button clearButton;
     private LinearLayout dataLayout;
 
@@ -132,10 +129,10 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         // this was jsut to satisfy some curiosity about Bonded devices (seems like BLE doesn't facilitate bonding)
-        Log.i(TAG, bluetoothAdapter.getBondedDevices().toString());
+        Log.i(TAG, "bonded device list "+ bluetoothAdapter.getBondedDevices().toString());
 
                 // Bluetooth
-                enableBluetoothButton = (Button) findViewById(R.id.enableBluetooth);
+        enableBluetoothButton = (Button) findViewById(R.id.enableBluetooth);
         enableBluetoothButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,6 +169,8 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
                 v.setEnabled(false);
                 connectionStatusText.setText("Connecting...");
                 Intent rfduinoIntent = new Intent(MainActivity.this, RFduinoService.class);
+                // AKA NOTE this may need to be "startService" in order for svc to persist
+                // once activity is destroyed (ie, for svc to persist forever)
                 bindService(rfduinoIntent, rfduinoServiceConnection, BIND_AUTO_CREATE);
             }
         });
@@ -283,6 +282,9 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
 
     protected void onDestroy(){
         super.onDestroy();
+//        if(!rfduinoServiceConnection.equals(null)) {
+//            unbindService(rfduinoServiceConnection);
+//        }
         unregisterReceiver(nReceiver);
     }
     private void upgradeState(int newState) {

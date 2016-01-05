@@ -33,6 +33,11 @@ public class NLService extends NotificationListenerService {
         Log.i(TAG,"**********  onNotificationPosted");
         Log.i(TAG,"ID :" + sbn.getId() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
         Intent i = new  Intent("com.akamediasystem.weft.NOTIFICATION_LISTENER_EXAMPLE");
+        // AKA note - here is where we can intercept notifications as soon as they happen
+        // and then send an intent to a weft service that conntects to and then updates the
+        // settings of the weft board
+        // weft board might need a watchdog/timeout behavior, ie if the garment is taken off
+        // for the night
         i.putExtra("notification_event","onNotificationPosted :" + sbn.getPackageName() + "\n");
         sendBroadcast(i);
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="6.5.0">
+<eagle version="6.6.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="yes"/>
@@ -150,7 +150,7 @@
 <text x="24.13" y="13.335" size="1.27" layer="25">SIG</text>
 <text x="26.67" y="63.5" size="1.27" layer="25" rot="R90">GND</text>
 <text x="26.67" y="60.325" size="1.27" layer="25" rot="R90">V+</text>
-<text x="26.67" y="25.4" size="1.778" layer="25" rot="R90">WEFT-microboard v1</text>
+<text x="26.67" y="25.4" size="1.778" layer="25" rot="R90">WEFT-microboard v2</text>
 <text x="5.715" y="27.305" size="1.778" layer="25" rot="R90">AKA MEDIA SYSTEM</text>
 </plain>
 <libraries>
