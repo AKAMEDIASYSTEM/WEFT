@@ -121,10 +121,6 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
         setContentView(R.layout.activity_main);
 
         txtView = (TextView) findViewById(R.id.textView);
-        nReceiver = new NotificationReceiver();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("com.akamediasystem.weft.NOTIFICATION_LISTENER_EXAMPLE");
-        registerReceiver(nReceiver,filter);
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -282,10 +278,6 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
 
     protected void onDestroy(){
         super.onDestroy();
-//        if(!rfduinoServiceConnection.equals(null)) {
-//            unbindService(rfduinoServiceConnection);
-//        }
-        unregisterReceiver(nReceiver);
     }
     private void upgradeState(int newState) {
         if (newState > state) {
@@ -402,30 +394,6 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
         }
     }
 
-    public void buttonClicked(View v){
 
-        if(v.getId() == R.id.btnCreateNotify){
-            NotificationManager nManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            NotificationCompat.Builder ncomp = new NotificationCompat.Builder(this);
-            ncomp.setContentTitle("WEFT notification");
-            ncomp.setContentText("Time is "+System.currentTimeMillis());
-            ncomp.setTicker("Notification Listener Service Example");
-            ncomp.setSmallIcon(R.mipmap.ic_launcher);
-            ncomp.setAutoCancel(true);
-            nManager.notify((int)System.currentTimeMillis(),ncomp.build());
-        }
-        else if(v.getId() == R.id.btnClearNotify){
-            Intent i = new Intent("com.akamediasystem.weft.NOTIFICATION_LISTENER_SERVICE_EXAMPLE");
-            i.putExtra("command","clearall");
-            sendBroadcast(i);
-        }
-        else if(v.getId() == R.id.btnListNotify){
-            Intent i = new Intent("com.akamediasystem.weft.NOTIFICATION_LISTENER_SERVICE_EXAMPLE");
-            i.putExtra("command","list");
-            sendBroadcast(i);
-        }
-
-
-    }
 }
 
